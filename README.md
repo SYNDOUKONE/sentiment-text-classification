@@ -2,7 +2,7 @@
 
 Classifying customer feedback by **sentiment** and **complaint topic** to surface what users care about.
 
-**Live demo:** https://syndoukone.github.io/sentiment-text-classification/ (static site in [`docs/`](docs/) — the trained baseline runs in the browser)
+**Live demo:** https://syndoukone.github.io/sentiment-text-classification/ (static site in [`docs/`](docs/) — the trained baseline runs in the browser) — available in English and French (FR / EN toggle, or `?lang=fr`)
 
 | Task | Best model | Test macro-F1 (95% CI) | Accuracy |
 |---|---|---|---|
@@ -113,6 +113,6 @@ cd docs && python -m http.server 8000   # open http://localhost:8000
 ```
 stc/        text cleaning, data loading/splits, EDA, metrics, training, fine-tuning
 reports/    metrics.json, finetune.json, figures/
-docs/       static demo site (GitHub Pages): index.html, app.js, assets/{results,model}.json
+docs/       static demo site (GitHub Pages): index.html, app.js, i18n.js (French strings), assets/{results,model}.json
 tests/      unit tests for text processing
 ```
