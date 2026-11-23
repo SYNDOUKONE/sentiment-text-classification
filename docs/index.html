@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title data-i18n="title">Sentiment Analysis &amp; Text Classification — Airline customer feedback</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="lang" role="group" aria-label="Language"><button data-lang="fr" lang="fr">FR</button><button data-lang="en" lang="en">EN</button></div>
+  <h1 data-i18n="h1">Sentiment Analysis &amp; Text Classification</h1>
+  <p data-i18n="tagline">Classifying customer feedback by sentiment and complaint topic to surface what users care about.</p>
+  <div class="btns">
+    <a href="https://github.com/SYNDOUKONE/sentiment-text-classification" data-i18n="btnRepo">GitHub repository</a>
+    <a href="#demo" data-i18n="btnDemo">Live demo</a>
+    <a href="#viz" data-i18n="btnViz">Evaluation visualizations</a>
+  </div>
+  <div class="kpis">
+    <div class="kpi"><b data-k="rows"></b><span data-i18n="kRows">tweets after cleaning</span></div>
+    <div class="kpi"><b data-k="bestF1"></b><span data-i18n="kBest">best sentiment macro-F1 (held-out test)</span></div>
+    <div class="kpi"><b data-k="baseF1"></b><span data-i18n="kBase">TF-IDF + logistic regression baseline</span></div>
+    <div class="kpi"><b data-k="topicF1"></b><span data-i18n="kTopic">complaint-topic macro-F1 (9 classes)</span></div>
+  </div>
+</div></header>
+
+<main class="wrap">
+<section class="step"><div class="num">01</div><div>
+  <h2 data-i18n="h01">Problem &amp; business context</h2>
+  <p data-i18n="p01">Airlines receive thousands of tweets a day; most are never read by a person. Automatic <b>sentiment</b> labels (negative / neutral / positive)
+  turn that stream into a measurable signal, and <b>topic</b> labels on complaints (late flight, lost luggage, customer service, …) tell
+  operations teams <i>what</i> to fix. Consumers of the output: social-media care teams (triage negative tweets first), and ops/CX managers
+  (weekly dashboards of complaint drivers per airline).</p>
+</div></section>
+
+<section class="step"><div class="num">02</div><div>
+  <h2 data-i18n="h02">Dataset &amp; sources</h2>
+  <p data-i18n="p02"><b>Twitter US Airline Sentiment</b> (CrowdFlower / Figure Eight, Feb 2015; via Hugging Face <code>osanseviero/twitter-airline-sentiment</code>):
+  <span data-k="raw"></span> tweets addressed to 6 US airlines, human-labelled by contributors.</p>
+  <ul class="tight" data-i18n="ul02">
+    <li><b>Task A — sentiment</b>: 3 classes <code>negative</code> / <code>neutral</code> / <code>positive</code>.</li>
+    <li><b>Task B — complaint topic</b>: for negative tweets, 10 "negative reason" labels; <code>Can't Tell</code> is dropped, leaving 9 classes.</li>
+  </ul>
+</div></section>
+
+<section class="step"><div class="num">03</div><div>
+  <h2 data-i18n="h03">Cleaning &amp; preprocessing</h2>
+  <ul class="tight" data-i18n="ul03">
+    <li>HTML-entity decoding, lower-casing, curly-quote normalisation.</li>
+    <li>URL removal and <b>@handle removal</b> — handles name the airline, which would otherwise leak the airline into the model.</li>
+    <li>Negation-preserving contractions (<code>can't → can not</code>, <code>n't → not</code>); no stop-word removal, since "not" flips sentiment.</li>
+    <li>Regex tokenisation that keeps words, <code>!</code>/<code>?</code> and emoji as tokens.</li>
+    <li>Exact-duplicate removal after cleaning (retweets/copies): <span data-k="dups"></span> rows dropped, so no duplicate can sit in both train and test.</li>
+    <li>Language detection (<code>langdetect</code>): <span data-k="flagged"></span> tweets flagged as non-English — on inspection they were English slang/emoji
+      ("sounds like fun !", "i ❤️ flying"), so the flag is reported but <b>not</b> used as a filter.</li>
+  </ul>
+  <p class="muted" data-i18n="p03">The same cleaning/tokenisation is re-implemented in JavaScript so the demo below runs the trained baseline in your browser.</p>
+</div></section>
+
+<section class="step"><div class="num">04</div><div>
+  <h2 data-i18n="h04">Exploratory data analysis</h2>
+  <p data-i18n="p04">The classes are imbalanced (<span data-k="balance"></span>), so accuracy alone would flatter a model that over-predicts "negative".
+  Negative tweets are longer (median <span data-k="lenNeg"></span> tokens vs <span data-k="lenPos"></span> for positive) — people explain what went wrong.</p>
+  <div class="grid">
+    <div class="card"><h4 data-i18n="cBalance">Class balance</h4><canvas id="cBalance"></canvas></div>
+    <div class="card"><h4 data-i18n="cLength">Length distribution (tokens)</h4><canvas id="cLength"></canvas></div>
+    <div class="card"><h4 data-i18n="cTopics">Complaint topics (all 10 labels, before dropping "Can't Tell")</h4><canvas id="cTopics"></canvas></div>
+    <div class="card"><h4 data-i18n="cNgrams">Most common bigrams by class</h4>
+      <select id="ngramSel"></select>
+      <div id="ngrams" class="chips" style="margin-top:8px"></div>
+      <div class="cap" data-i18n="capNgrams">Display-only stop words removed. Negative: "customer service", "cancelled flightled" (an artefact in the source data where "Cancelled Flight" was auto-inserted), "been hold" (… on hold). Positive: "great job", "thanks much", "🙏 🙏" — and "customer service" again: the same bigram appears in praise and complaints.</div>
+    </div>
+  </div>
+</div></section>
+
+<section class="step"><div class="num">05</div><div>
+  <h2 data-i18n="h05">Feature engineering</h2>
+  <ul class="tight" data-i18n="ul05">
+    <li><b>Sparse</b>: TF-IDF over word uni- and bi-grams (min_df=2, sublinear tf, 20k features) — bigrams capture "not good", "on hold", "thank you".</li>
+    <li><b>Dense</b>: TF-IDF → TruncatedSVD (300 components) for gradient boosting, which does not handle 20k sparse columns well.</li>
+    <li><b>Contextual</b>: frozen <code>all-MiniLM-L6-v2</code> sentence embeddings (384-d), and full transformer fine-tuning (DistilRoBERTa) with its own sub-word tokeniser.</li>
+  </ul>
+</div></section>
+
+<section class="step"><div class="num">06</div><div>
+  <h2 data-i18n="h06">Model selection</h2>
+  <p data-i18n="p06">Baselines vs transformers on the same split:</p>
+  <table id="tblModels"></table>
+</div></section>
+
+<section class="step"><div class="num">07</div><div>
+  <h2 data-i18n="h07">Training &amp; validation</h2>
+  <p data-i18n="p07">Stratified 70 / 15 / 15 train / validation / test split (seed 42). Hyper-parameters (e.g. logistic-regression <code>C</code>) and the fine-tuning
+  epoch are chosen on <b>validation macro-F1</b>; the test set is touched once. Class-balanced weights in every model so minority classes count.</p>
+</div></section>
+
+<section class="step"><div class="num">08</div><div>
+  <h2 data-i18n="h08">Evaluation metrics</h2>
+  <p data-i18n="p08"><b>Macro-F1</b> is the headline metric (each class weighs the same). Also reported: per-class recall, confusion matrices, one-vs-rest ROC-AUC,
+  and 95% bootstrap confidence intervals (1,000 resamples of the test set) on macro-F1.</p>
+</div></section>
+
+<section class="step"><div class="num">09</div><div>
+  <h2 data-i18n="h09">Results</h2>
+  <div id="resultsText"></div>
+  <h3 data-i18n="hRecall">Per-class recall (sentiment)</h3>
+  <table id="tblRecall"></table>
+  <h3 data-i18n="hTopicTbl">Complaint topic (negative tweets only)</h3>
+  <table id="tblTopic"></table>
+</div></section>
+
+<section class="step"><div class="num">10</div><div>
+  <h2 data-i18n="h10">Limitations</h2>
+  <ul class="tight" data-i18n="ul10">
+    <li><b>Sarcasm &amp; mixed tweets</b>: "great, another 3 hour delay. love it." is scored positive by the bag-of-words baseline.</li>
+    <li><b>Label noise</b>: crowd labels; most of the confident errors below are short "thanks!" tweets labelled <i>neutral</i>, or detailed complaints labelled neutral.</li>
+    <li><b>Domain shift</b>: one week of 2015 tweets about US airlines; vocabulary (and Twitter itself) has changed.</li>
+    <li><b>Multilingual text</b>: the corpus is English; the TF-IDF model has no coverage for other languages and language-ID is unreliable on short texts.</li>
+    <li>Topic labels exist only for negative tweets, and several topics have &lt; 100 examples.</li>
+  </ul>
+  <h3 data-i18n="hErrors">Most confident errors (baseline)</h3>
+  <table id="tblErrors"></table>
+</div></section>
+
+<section class="step"><div class="num">11</div><div>
+  <h2 data-i18n="h11">Lessons learned</h2>
+  <div id="lessons"></div>
+</div></section>
+
+<section id="demo" style="padding:30px 0;border-bottom:1px solid var(--line)">
+  <h2 data-i18n="hDemo">Live demo <span class="badge">runs in your browser</span></h2>
+  <p class="muted" data-i18n="pDemo">The trained TF-IDF + logistic-regression models (sentiment + topic) exported to JSON — no server. Word contributions are exact for a linear model.</p>
+  <textarea id="inp">@united my flight was Cancelled Flightled and I've been on hold for 2 hours. Terrible customer service!</textarea>
+  <div class="examples" id="examples"></div>
+  <div class="grid">
+    <div class="card"><h4 data-i18n="dSent">Sentiment</h4><div id="outSent" class="bars"></div><h4 style="margin-top:14px" data-i18n="dTopic">Complaint topic <span class="muted" style="font-weight:400;font-size:13px">(if negative)</span></h4><div id="outTopic" class="bars"></div></div>
+    <div class="card"><h4 data-i18n="dWhy">Why? Word contributions to the predicted class (log-odds)</h4><canvas id="cLive"></canvas></div>
+  </div>
+</section>
+
+<section id="viz" style="padding:30px 0">
+  <h2 data-i18n="hViz">Evaluation visualizations</h2>
+  <p class="muted" data-i18n="pViz">All charts use the real held-out test set (<span data-k="ntest"></span> tweets) of this project.</p>
+  <div class="grid">
+    <div class="card" style="grid-column:1/-1"><h4 data-i18n="vCompare">Model performance comparison</h4><canvas id="cCompare"></canvas>
+      <div class="cap" data-i18n="capCompare">Macro-averaged metrics; ROC-AUC is one-vs-rest. Interpretable baseline vs non-linear and transformer models.</div></div>
+    <div class="card"><h4 data-i18n="vCM">Confusion matrix — 3 classes</h4>
+      <select id="cmModel"></select><canvas id="cCM3" style="margin-top:8px"></canvas>
+      <div class="cap" data-i18n="capCM">Rows = actual, columns = predicted. Most errors are neutral ↔ negative.</div></div>
+    <div class="card"><h4 data-i18n="vBin">"Needs attention" alert: negative vs rest</h4>
+      <select id="thrModel"></select>
+      <div style="margin:10px 0"><span data-i18n="thr">Decision threshold</span> <b id="thrVal">0.50</b> <input type="range" id="thr" min="0.05" max="0.95" step="0.01" value="0.5" style="width:60%"></div>
+      <div class="cm" id="cmBin"></div>
+      <div class="stats" id="binStats"></div>
+      <div class="cap" data-i18n="capBin">Move the threshold to trade precision (fewer false alarms) for recall (fewer missed complaints).</div></div>
+    <div class="card"><h4 data-i18n="vROC">ROC curve — negative vs rest</h4><canvas id="cROC"></canvas><div class="cap" data-i18n="capROC">AUC 0.5 is random, 1.0 is perfect.</div></div>
+    <div class="card"><h4 data-i18n="vPR">Precision–Recall curve — negative vs rest</h4><canvas id="cPR"></canvas><div class="cap" data-i18n="capPR">More informative than ROC when the positive class is rare.</div></div>
+    <div class="card"><h4 data-i18n="vImp">Feature importance (random forest)</h4><canvas id="cImp"></canvas><div class="cap" data-i18n="capImp">Mean impurity decrease of each TF-IDF term across 400 trees.</div></div>
+    <div class="card"><h4 data-i18n="vCoef">Top terms per class (logistic regression)</h4>
+      <select id="coefSel"></select><canvas id="cCoef"></canvas></div>
+    <div class="card"><h4 data-i18n="vLoss">Training vs validation loss</h4><select id="lossSel"></select><canvas id="cLoss"></canvas>
+      <div class="cap" data-i18n="capLoss">Diverging curves signal over-fitting; early stopping / best-epoch selection uses the validation curve.</div></div>
+    <div class="card"><h4 data-i18n="vExp">SHAP-style explanation for one test tweet</h4><select id="expSel"></select><div id="expText" class="cap"></div><canvas id="cExp"></canvas>
+      <div class="cap" data-i18n="capExp">Additive contribution of each n-gram (tf-idf × coefficient) to the predicted class log-odds.</div></div>
+  </div>
+</section>
+</main>
+<footer class="wrap" data-i18n="footer">Data: Twitter US Airline Sentiment (CrowdFlower, CC BY-NC-SA 4.0). Code: <a href="https://github.com/SYNDOUKONE/sentiment-text-classification">github.com/SYNDOUKONE/sentiment-text-classification</a>.</footer>
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
