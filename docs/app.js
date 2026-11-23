@@ -1,7 +1,9 @@
 const COLORS = {negative: "#e45756", neutral: "#9d9da1", positive: "#54a24b"};
 const PALETTE = ["#4c78a8", "#f58518", "#54a24b", "#b279a2", "#e45756", "#72b7b2", "#eeca3b"];
 const SENT = ["negative", "neutral", "positive"];
-const saved = new URLSearchParams(location.search).get("lang") || localStorage.getItem("lang") || (navigator.language || "en").slice(0, 2);
+const store = {get: k => { try { return localStorage.getItem(k); } catch { return null; } },
+  set: (k, v) => { try { localStorage.setItem(k, v); } catch {} }};
+const saved = new URLSearchParams(location.search).get("lang") || store.get("lang") || (navigator.language || "en").slice(0, 2);
 let LANG = saved === "fr" ? "fr" : "en";
 const tr = (en, fr) => LANG === "fr" ? fr : en;
 const num = s => LANG === "fr" ? String(s).replace(".", ",") : String(s);
@@ -241,7 +243,7 @@ function render() {
 }
 
 document.querySelectorAll("[data-lang]").forEach(b => b.onclick = () => {
-  LANG = b.dataset.lang; localStorage.setItem("lang", LANG);
+  LANG = b.dataset.lang; store.set("lang", LANG);
   applyStatic(); if (R) render();
 });
 
