@@ -111,8 +111,8 @@
 <section class="step"><div class="num">10</div><div>
   <h2>Limitations</h2>
   <ul class="tight">
-    <li><b>Sarcasm</b>: "great, another 3 hour delay 👏" — the most confident errors below are mostly sarcastic or mixed tweets.</li>
-    <li><b>Label noise</b>: crowd labels with a confidence score; neutral vs. mild-negative is often ambiguous even for humans.</li>
+    <li><b>Sarcasm &amp; mixed tweets</b>: "great, another 3 hour delay. love it." is scored positive by the bag-of-words baseline.</li>
+    <li><b>Label noise</b>: crowd labels; most of the confident errors below are short "thanks!" tweets labelled <i>neutral</i>, or detailed complaints labelled neutral.</li>
     <li><b>Domain shift</b>: one week of 2015 tweets about US airlines; vocabulary (and Twitter itself) has changed.</li>
     <li><b>Multilingual text</b>: the corpus is English; the TF-IDF model has no coverage for other languages and language-ID is unreliable on short texts.</li>
     <li>Topic labels exist only for negative tweets, and several topics have &lt; 100 examples.</li>

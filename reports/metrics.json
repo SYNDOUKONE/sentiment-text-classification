@@ -3,380 +3,414 @@
     "raw_rows": 14640,
     "dropped_empty": 0,
     "dropped_duplicates": 364,
-    "dropped_non_english": 84,
-    "clean_rows": 14192
+    "flagged_non_english": 84,
+    "clean_rows": 14276
   },
   "sentiment": {
     "Logistic Regression (TF-IDF)": {
-      "accuracy": 0.798,
-      "macro_precision": 0.734,
-      "macro_recall": 0.7452,
-      "macro_f1": 0.7394,
+      "accuracy": 0.7876,
+      "macro_precision": 0.7247,
+      "macro_recall": 0.7466,
+      "macro_f1": 0.7342,
       "macro_f1_ci95": [
-        0.7174,
-        0.7606
+        0.7116,
+        0.7549
       ],
-      "weighted_f1": 0.7997,
-      "roc_auc_ovr": 0.9094,
+      "weighted_f1": 0.7919,
+      "roc_auc_ovr": 0.9033,
       "per_class": {
         "negative": {
-          "precision": 0.8866213151927438,
-          "recall": 0.8650442477876106,
-          "f1": 0.8756998880179171,
-          "support": 1356
+          "precision": 0.894283476898982,
+          "recall": 0.8397058823529412,
+          "f1": 0.8661357603337125,
+          "support": 1360
         },
         "neutral": {
-          "precision": 0.6225596529284165,
-          "recall": 0.6507936507936508,
-          "f1": 0.6363636363636364,
-          "support": 441
+          "precision": 0.5883495145631068,
+          "recall": 0.6778523489932886,
+          "f1": 0.6299376299376299,
+          "support": 447
         },
         "positive": {
-          "precision": 0.6927536231884058,
-          "recall": 0.7198795180722891,
-          "f1": 0.7060561299852289,
-          "support": 332
+          "precision": 0.6914285714285714,
+          "recall": 0.7223880597014926,
+          "f1": 0.7065693430656934,
+          "support": 335
         }
       },
-      "val_macro_f1": 0.7477,
-      "info": "C=4, class_weight=balanced, uni+bi-grams, 20000 features"
+      "val_macro_f1": 0.7494,
+      "info": "C=1, class_weight=balanced, uni+bi-grams, 20000 features"
     },
     "Random Forest (TF-IDF)": {
-      "accuracy": 0.7642,
-      "macro_precision": 0.7317,
-      "macro_recall": 0.6258,
-      "macro_f1": 0.6613,
+      "accuracy": 0.7759,
+      "macro_precision": 0.7623,
+      "macro_recall": 0.6397,
+      "macro_f1": 0.6801,
       "macro_f1_ci95": [
-        0.6345,
-        0.6854
+        0.6542,
+        0.7037
       ],
-      "weighted_f1": 0.7466,
-      "roc_auc_ovr": 0.8922,
+      "weighted_f1": 0.7589,
+      "roc_auc_ovr": 0.8872,
       "per_class": {
         "negative": {
-          "precision": 0.7869565217391304,
-          "recall": 0.9343657817109144,
-          "f1": 0.8543492919757248,
-          "support": 1356
+          "precision": 0.7886977886977887,
+          "recall": 0.9441176470588235,
+          "f1": 0.8594377510040161,
+          "support": 1360
         },
         "neutral": {
-          "precision": 0.6354515050167224,
-          "recall": 0.4308390022675737,
-          "f1": 0.5135135135135135,
-          "support": 441
+          "precision": 0.6743421052631579,
+          "recall": 0.45861297539149887,
+          "f1": 0.5459387483355526,
+          "support": 447
         },
         "positive": {
-          "precision": 0.7727272727272727,
-          "recall": 0.5120481927710844,
-          "f1": 0.6159420289855072,
-          "support": 332
+          "precision": 0.8238095238095238,
+          "recall": 0.5164179104477612,
+          "f1": 0.634862385321101,
+          "support": 335
         }
       },
-      "val_macro_f1": 0.6847,
+      "val_macro_f1": 0.686,
       "info": "400 trees, class_weight=balanced_subsample"
     },
     "Gradient Boosting (TF-IDF\u2192SVD)": {
-      "accuracy": 0.7562,
+      "accuracy": 0.7582,
       "macro_precision": 0.6884,
-      "macro_recall": 0.6885,
-      "macro_f1": 0.6882,
+      "macro_recall": 0.6922,
+      "macro_f1": 0.6902,
       "macro_f1_ci95": [
-        0.6663,
-        0.7104
+        0.6675,
+        0.7125
       ],
-      "weighted_f1": 0.755,
-      "roc_auc_ovr": 0.8717,
+      "weighted_f1": 0.7583,
+      "roc_auc_ovr": 0.8705,
       "per_class": {
         "negative": {
-          "precision": 0.8371073776479182,
-          "recall": 0.8451327433628318,
-          "f1": 0.8411009174311926,
-          "support": 1356
+          "precision": 0.8471196454948301,
+          "recall": 0.8433823529411765,
+          "f1": 0.8452468680913781,
+          "support": 1360
         },
         "neutral": {
-          "precision": 0.5748792270531401,
-          "recall": 0.5396825396825397,
-          "f1": 0.5567251461988304,
-          "support": 441
+          "precision": 0.5782312925170068,
+          "recall": 0.5704697986577181,
+          "f1": 0.5743243243243243,
+          "support": 447
         },
         "positive": {
-          "precision": 0.653179190751445,
-          "recall": 0.6807228915662651,
-          "f1": 0.6666666666666666,
-          "support": 332
+          "precision": 0.6397694524495677,
+          "recall": 0.6626865671641791,
+          "f1": 0.6510263929618768,
+          "support": 335
         }
       },
-      "val_macro_f1": 0.6931,
-      "info": "HistGradientBoosting on 300 SVD components, 86 rounds (early stopping)"
+      "val_macro_f1": 0.696,
+      "info": "HistGradientBoosting on 300 SVD components, 75 rounds (early stopping)"
     },
     "MiniLM embeddings + LR": {
-      "accuracy": 0.7647,
-      "macro_precision": 0.699,
-      "macro_recall": 0.7525,
-      "macro_f1": 0.7178,
+      "accuracy": 0.7558,
+      "macro_precision": 0.6904,
+      "macro_recall": 0.745,
+      "macro_f1": 0.7089,
       "macro_f1_ci95": [
-        0.6953,
-        0.7383
+        0.6871,
+        0.7305
       ],
-      "weighted_f1": 0.7741,
-      "roc_auc_ovr": 0.9048,
+      "weighted_f1": 0.7667,
+      "roc_auc_ovr": 0.9014,
       "per_class": {
         "negative": {
-          "precision": 0.9190600522193212,
-          "recall": 0.7787610619469026,
-          "f1": 0.8431137724550898,
-          "support": 1356
+          "precision": 0.9234828496042217,
+          "recall": 0.7720588235294118,
+          "f1": 0.8410092110532639,
+          "support": 1360
         },
         "neutral": {
-          "precision": 0.5616438356164384,
-          "recall": 0.7437641723356009,
-          "f1": 0.64,
-          "support": 441
+          "precision": 0.5311973018549747,
+          "recall": 0.7046979865771812,
+          "f1": 0.6057692307692307,
+          "support": 447
         },
         "positive": {
-          "precision": 0.6161616161616161,
-          "recall": 0.7349397590361446,
-          "f1": 0.6703296703296703,
-          "support": 332
+          "precision": 0.616504854368932,
+          "recall": 0.7582089552238805,
+          "f1": 0.6800535475234271,
+          "support": 335
         }
       },
-      "val_macro_f1": 0.743,
-      "info": "sentence-transformers/all-MiniLM-L6-v2 (384-d contextual sentence embeddings, frozen), C=16"
+      "val_macro_f1": 0.7419,
+      "info": "sentence-transformers/all-MiniLM-L6-v2 (384-d contextual sentence embeddings, frozen), C=2"
     },
     "Twitter-RoBERTa (zero-shot)": {
-      "accuracy": 0.7727,
-      "macro_precision": 0.7062,
-      "macro_recall": 0.7721,
-      "macro_f1": 0.7293,
+      "accuracy": 0.7656,
+      "macro_precision": 0.7015,
+      "macro_recall": 0.7644,
+      "macro_f1": 0.7231,
       "macro_f1_ci95": [
-        0.7082,
-        0.7507
+        0.7028,
+        0.7441
       ],
-      "weighted_f1": 0.7821,
-      "roc_auc_ovr": 0.9076,
+      "weighted_f1": 0.7763,
+      "roc_auc_ovr": 0.9003,
       "per_class": {
         "negative": {
-          "precision": 0.9367311072056239,
-          "recall": 0.7861356932153393,
-          "f1": 0.8548516439454691,
-          "support": 1356
+          "precision": 0.9372791519434629,
+          "recall": 0.7801470588235294,
+          "f1": 0.8515248796147673,
+          "support": 1360
         },
         "neutral": {
-          "precision": 0.5256410256410257,
-          "recall": 0.6507936507936508,
-          "f1": 0.5815602836879432,
-          "support": 441
+          "precision": 0.5043782837127846,
+          "recall": 0.6442953020134228,
+          "f1": 0.5658153241650294,
+          "support": 447
         },
         "positive": {
-          "precision": 0.6561797752808989,
-          "recall": 0.8795180722891566,
-          "f1": 0.7516087516087516,
-          "support": 332
+          "precision": 0.662870159453303,
+          "recall": 0.8686567164179104,
+          "f1": 0.751937984496124,
+          "support": 335
         }
       },
       "val_macro_f1": null,
       "info": "cardiffnlp/twitter-roberta-base-sentiment-latest, pretrained on ~124M tweets, no training on this data"
+    },
+    "DistilRoBERTa (fine-tuned)": {
+      "accuracy": 0.8305,
+      "macro_precision": 0.7744,
+      "macro_recall": 0.8137,
+      "macro_f1": 0.7908,
+      "macro_f1_ci95": [
+        0.7705,
+        0.8106
+      ],
+      "weighted_f1": 0.8358,
+      "roc_auc_ovr": 0.9385,
+      "per_class": {
+        "negative": {
+          "precision": 0.9417004048582996,
+          "recall": 0.8551470588235294,
+          "f1": 0.8963391136801542,
+          "support": 1360
+        },
+        "neutral": {
+          "precision": 0.6282527881040892,
+          "recall": 0.756152125279642,
+          "f1": 0.6862944162436548,
+          "support": 447
+        },
+        "positive": {
+          "precision": 0.7533875338753387,
+          "recall": 0.8298507462686567,
+          "f1": 0.7897727272727273,
+          "support": 335
+        }
+      },
+      "val_macro_f1": 0.8026,
+      "info": "distilroberta-base, 3 epochs, lr=3e-05, max_len=64, class-weighted loss, best epoch by val macro-F1, trained on CPU in 56 min"
     }
   },
-  "best_sentiment_model": "Logistic Regression (TF-IDF)",
+  "best_sentiment_model": "DistilRoBERTa (fine-tuned)",
   "topic": {
     "Logistic Regression (TF-IDF)": {
-      "accuracy": 0.6217,
-      "macro_f1": 0.5423,
+      "accuracy": 0.6715,
+      "macro_f1": 0.5655,
       "macro_f1_ci95": [
-        0.4852,
-        0.5927
+        0.5219,
+        0.6072
       ],
-      "weighted_f1": 0.6266,
+      "weighted_f1": 0.6749,
       "per_class": {
         "Bad Flight": {
-          "precision": 0.390625,
-          "recall": 0.5681818181818182,
-          "f1": 0.46296296296296297,
-          "support": 88
+          "precision": 0.41935483870967744,
+          "recall": 0.4875,
+          "f1": 0.4508670520231214,
+          "support": 80
         },
         "Cancelled Flight": {
-          "precision": 0.7480314960629921,
-          "recall": 0.7916666666666666,
-          "f1": 0.7692307692307693,
-          "support": 120
+          "precision": 0.753968253968254,
+          "recall": 0.8482142857142857,
+          "f1": 0.7983193277310925,
+          "support": 112
         },
         "Customer Service Issue": {
-          "precision": 0.7408536585365854,
-          "recall": 0.5799522673031027,
-          "f1": 0.6506024096385542,
-          "support": 419
+          "precision": 0.7874659400544959,
+          "recall": 0.6674364896073903,
+          "f1": 0.7225,
+          "support": 433
         },
         "Damaged Luggage": {
-          "precision": 1.0,
+          "precision": 0.4,
           "recall": 0.16666666666666666,
-          "f1": 0.2857142857142857,
-          "support": 6
+          "f1": 0.23529411764705882,
+          "support": 12
         },
         "Flight Attendant Complaints": {
-          "precision": 0.39823008849557523,
-          "recall": 0.569620253164557,
-          "f1": 0.46875,
-          "support": 79
+          "precision": 0.4536082474226804,
+          "recall": 0.6027397260273972,
+          "f1": 0.5176470588235295,
+          "support": 73
         },
         "Flight Booking Problems": {
-          "precision": 0.4473684210526316,
-          "recall": 0.6455696202531646,
-          "f1": 0.5284974093264249,
-          "support": 79
+          "precision": 0.48148148148148145,
+          "recall": 0.5909090909090909,
+          "f1": 0.5306122448979592,
+          "support": 88
         },
         "Late Flight": {
-          "precision": 0.6991525423728814,
-          "recall": 0.6707317073170732,
-          "f1": 0.6846473029045643,
-          "support": 246
+          "precision": 0.7264957264957265,
+          "recall": 0.7172995780590717,
+          "f1": 0.721868365180467,
+          "support": 237
         },
         "Lost Luggage": {
-          "precision": 0.6601941747572816,
-          "recall": 0.6868686868686869,
-          "f1": 0.6732673267326733,
-          "support": 99
+          "precision": 0.7589285714285714,
+          "recall": 0.7870370370370371,
+          "f1": 0.7727272727272727,
+          "support": 108
         },
         "longlines": {
-          "precision": 0.47619047619047616,
-          "recall": 0.2857142857142857,
-          "f1": 0.35714285714285715,
-          "support": 35
+          "precision": 0.3333333333333333,
+          "recall": 0.34615384615384615,
+          "f1": 0.33962264150943394,
+          "support": 26
         }
       },
       "info": "C=2"
     },
     "Random Forest (TF-IDF)": {
-      "accuracy": 0.6243,
-      "macro_f1": 0.4178,
+      "accuracy": 0.6484,
+      "macro_f1": 0.4412,
       "macro_f1_ci95": [
-        0.3886,
-        0.4416
+        0.407,
+        0.4729
       ],
-      "weighted_f1": 0.5874,
+      "weighted_f1": 0.6119,
       "per_class": {
         "Bad Flight": {
-          "precision": 0.5454545454545454,
-          "recall": 0.2727272727272727,
-          "f1": 0.36363636363636365,
-          "support": 88
+          "precision": 0.59375,
+          "recall": 0.2375,
+          "f1": 0.3392857142857143,
+          "support": 80
         },
         "Cancelled Flight": {
-          "precision": 0.7815126050420168,
-          "recall": 0.775,
-          "f1": 0.7782426778242678,
-          "support": 120
+          "precision": 0.8454545454545455,
+          "recall": 0.8303571428571429,
+          "f1": 0.8378378378378378,
+          "support": 112
         },
         "Customer Service Issue": {
-          "precision": 0.5682888540031397,
-          "recall": 0.863961813842482,
-          "f1": 0.6856060606060606,
-          "support": 419
+          "precision": 0.5964912280701754,
+          "recall": 0.8637413394919169,
+          "f1": 0.7056603773584905,
+          "support": 433
         },
         "Damaged Luggage": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
-          "support": 6
+          "support": 12
         },
         "Flight Attendant Complaints": {
-          "precision": 0.6428571428571429,
-          "recall": 0.22784810126582278,
-          "f1": 0.3364485981308411,
-          "support": 79
+          "precision": 0.8888888888888888,
+          "recall": 0.2191780821917808,
+          "f1": 0.3516483516483517,
+          "support": 73
         },
         "Flight Booking Problems": {
-          "precision": 0.6842105263157895,
-          "recall": 0.16455696202531644,
-          "f1": 0.2653061224489796,
-          "support": 79
+          "precision": 0.5862068965517241,
+          "recall": 0.19318181818181818,
+          "f1": 0.2905982905982906,
+          "support": 88
         },
         "Late Flight": {
-          "precision": 0.7061611374407583,
-          "recall": 0.6056910569105691,
-          "f1": 0.6520787746170679,
-          "support": 246
+          "precision": 0.6764705882352942,
+          "recall": 0.679324894514768,
+          "f1": 0.6778947368421052,
+          "support": 237
         },
         "Lost Luggage": {
-          "precision": 0.6371681415929203,
-          "recall": 0.7272727272727273,
-          "f1": 0.6792452830188679,
-          "support": 99
+          "precision": 0.6754385964912281,
+          "recall": 0.7129629629629629,
+          "f1": 0.6936936936936937,
+          "support": 108
         },
         "longlines": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "support": 35
+          "precision": 1.0,
+          "recall": 0.038461538461538464,
+          "f1": 0.07407407407407407,
+          "support": 26
         }
       },
       "info": "400 trees"
     },
     "MiniLM embeddings + LR": {
-      "accuracy": 0.614,
-      "macro_f1": 0.5381,
+      "accuracy": 0.6091,
+      "macro_f1": 0.5415,
       "macro_f1_ci95": [
-        0.5028,
-        0.5743
+        0.5074,
+        0.5728
       ],
-      "weighted_f1": 0.6303,
+      "weighted_f1": 0.6279,
       "per_class": {
         "Bad Flight": {
-          "precision": 0.4090909090909091,
-          "recall": 0.6136363636363636,
-          "f1": 0.4909090909090909,
-          "support": 88
+          "precision": 0.39603960396039606,
+          "recall": 0.5,
+          "f1": 0.4419889502762431,
+          "support": 80
         },
         "Cancelled Flight": {
-          "precision": 0.6811594202898551,
-          "recall": 0.7833333333333333,
-          "f1": 0.7286821705426356,
-          "support": 120
+          "precision": 0.6739130434782609,
+          "recall": 0.8303571428571429,
+          "f1": 0.744,
+          "support": 112
         },
         "Customer Service Issue": {
-          "precision": 0.8407407407407408,
-          "recall": 0.5417661097852029,
-          "f1": 0.6589259796806967,
-          "support": 419
+          "precision": 0.8388278388278388,
+          "recall": 0.5288683602771362,
+          "f1": 0.6487252124645893,
+          "support": 433
         },
         "Damaged Luggage": {
-          "precision": 0.14285714285714285,
-          "recall": 0.5,
-          "f1": 0.2222222222222222,
-          "support": 6
+          "precision": 0.23529411764705882,
+          "recall": 0.6666666666666666,
+          "f1": 0.34782608695652173,
+          "support": 12
         },
         "Flight Attendant Complaints": {
-          "precision": 0.43103448275862066,
-          "recall": 0.6329113924050633,
-          "f1": 0.5128205128205128,
-          "support": 79
+          "precision": 0.4095238095238095,
+          "recall": 0.589041095890411,
+          "f1": 0.48314606741573035,
+          "support": 73
         },
         "Flight Booking Problems": {
-          "precision": 0.4148148148148148,
-          "recall": 0.7088607594936709,
-          "f1": 0.5233644859813084,
-          "support": 79
+          "precision": 0.35570469798657717,
+          "recall": 0.6022727272727273,
+          "f1": 0.4472573839662447,
+          "support": 88
         },
         "Late Flight": {
-          "precision": 0.7668393782383419,
-          "recall": 0.6016260162601627,
-          "f1": 0.6742596810933941,
-          "support": 246
+          "precision": 0.7864583333333334,
+          "recall": 0.6371308016877637,
+          "f1": 0.703962703962704,
+          "support": 237
         },
         "Lost Luggage": {
-          "precision": 0.7244897959183674,
-          "recall": 0.7171717171717171,
-          "f1": 0.7208121827411168,
-          "support": 99
+          "precision": 0.7547169811320755,
+          "recall": 0.7407407407407407,
+          "f1": 0.7476635514018691,
+          "support": 108
         },
         "longlines": {
-          "precision": 0.23529411764705882,
-          "recall": 0.45714285714285713,
-          "f1": 0.3106796116504854,
-          "support": 35
+          "precision": 0.2112676056338028,
+          "recall": 0.5769230769230769,
+          "f1": 0.30927835051546393,
+          "support": 26
         }
       },
-      "info": "C=1"
+      "info": "C=0.5"
     }
   },
   "best_topic_model": "Logistic Regression (TF-IDF)"

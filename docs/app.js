@@ -1,8 +1,9 @@
 const COLORS = {negative: "#e45756", neutral: "#9d9da1", positive: "#54a24b"};
 const PALETTE = ["#4c78a8", "#f58518", "#54a24b", "#b279a2", "#e45756", "#72b7b2", "#eeca3b"];
 const SENT = ["negative", "neutral", "positive"];
-const pct = v => (100 * v).toFixed(1) + "%";
-const f3 = v => v.toFixed(3);
+const round = (v, d) => (Math.round(v * 10 ** d + 1e-9) / 10 ** d).toFixed(d);
+const pct = v => round(100 * v, 1) + "%";
+const f3 = v => round(v, 3);
 Chart.defaults.color = "#9aa1b2";
 Chart.defaults.borderColor = "#262b38";
 Chart.defaults.font.size = 12;
@@ -110,8 +111,8 @@ Promise.all([fetch("assets/results.json").then(r => r.json()), fetch("assets/mod
     vague ones ("Bad Flight", "longlines") are not.</p>`;
   const ft = names.find(n => n.includes("fine-tuned"));
   $("lessons").innerHTML = `<ul class="tight">
-    <li>A well-tuned <b>TF-IDF + logistic regression</b> baseline (macro-F1 ${f3(S[base].macro_f1)}) is hard to beat and is fast, tiny (runs in this page) and explainable.</li>
-    ${ft ? `<li>Fine-tuning a transformer is where contextual models pay off (${f3(S[ft].macro_f1)}, ${S[ft].macro_f1 > S[base].macro_f1 ? "+" : ""}${f3(S[ft].macro_f1 - S[base].macro_f1)} vs baseline); frozen sentence embeddings + LR (${f3(S["MiniLM embeddings + LR"].macro_f1)}) are not enough on their own.</li>` :
+    <li>A tuned <b>TF-IDF + logistic regression</b> baseline (macro-F1 ${f3(S[base].macro_f1)}) beats random forest, gradient boosting, frozen embeddings and a zero-shot Twitter model — and it is tiny (runs in this page) and explainable.</li>
+    ${ft ? `<li>Fine-tuning a transformer is where contextual models pay off (${f3(S[ft].macro_f1)}, ${S[ft].macro_f1 > S[base].macro_f1 ? "+" : ""}${f3(S[ft].macro_f1 - S[base].macro_f1)} vs baseline); frozen sentence embeddings + LR (${f3(S["MiniLM embeddings + LR"].macro_f1)}) are not enough on their own. The biggest gain is on the hard <b>neutral</b> class (recall ${pct(S[ft].per_class.neutral.recall)} vs ${pct(S[base].per_class.neutral.recall)}).</li>` :
       `<li>Frozen sentence embeddings + LR (${f3(S["MiniLM embeddings + LR"].macro_f1)}) do not beat the sparse baseline on short, slangy tweets.</li>`}
     <li>Tree ensembles on sparse TF-IDF underperform linear models for text (RF ${f3(S["Random Forest (TF-IDF)"].macro_f1)}).</li>
     <li>Preprocessing decisions matter more than expected: removing @handles prevents airline leakage, de-duplicating prevents train/test leakage,
