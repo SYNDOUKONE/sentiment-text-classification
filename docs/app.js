@@ -244,6 +244,7 @@ function render() {
 
 document.querySelectorAll("[data-lang]").forEach(b => b.onclick = () => {
   LANG = b.dataset.lang; store.set("lang", LANG);
+  const u = new URL(location.href); if (u.searchParams.has("lang")) { u.searchParams.set("lang", LANG); history.replaceState(null, "", u); }
   applyStatic(); if (R) render();
 });
 
